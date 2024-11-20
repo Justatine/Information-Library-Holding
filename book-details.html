@@ -21,24 +21,16 @@
         </div>
     </nav>
 
-    <div class="header-container">    
-        <nav class="flex justify-center p-2" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <div class="header-container">  
+        <nav class="flex justify-center p-2 overflow-x-auto" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse min-w-max">
             <li class="inline-flex items-center">
-                <a href="index.html" class="inline-flex items-center text-sm font-medium text-white hover:text-blue-600 dark:text-white dark:hover:text-white">
-                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <a href="index.html" class="inline-flex items-center text-xs md:text-sm font-medium text-white hover:text-blue-600 dark:text-white dark:hover:text-white">
+                <svg class="w-3 h-3 me-1.5 md:me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                 </svg>
                 Home
                 </a>
-            </li>
-            <li>
-                <div class="flex items-center">
-                <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                </svg>
-                <a href="suggested-books.html" class="ms-1 text-sm font-medium text-white hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Suggested Books</a>
-                </div>
             </li>
             <li aria-current="page">
                 <div class="flex items-center">
@@ -60,41 +52,41 @@
         <button class="search-button">Go</button>
     </div>
 
-    <div class="lg:w-full sm:w-full mx-auto lg:p-8 sm:p-2">
-        <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
-            <div>
-                <h4 class="holding-title font-bold">Title</h4>
-                <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    <p>
-                        <strong>Author: </strong>Author Name
-                        <strong>Year Published: </strong>2024
-                    </p>
+    <div class="content-container">
+        <div class="lg:w-full sm:w-full mx-auto lg:p-8 sm:p-2">
+            <div class="flex flex-wrap justify-between">
+                <div>
+                    <a href="index.html">
+                        <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">← Back</button>
+                    </a>
                 </div>
             </div>
-            <div>
-                <a href="book-details.html"> 
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Book Details</button>   
-                </a>
+            <div class="bg-gray-50 hover:bg-gray-100 p-4 rounded-lg mt-2">
+                <div>
+                    <h4 class="holding-title font-bold">1. Title</h4>
+                    <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        <p><strong>Author: </strong>Author Name</p>
+                        <p><strong>Year Published: </strong>2024</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="lg:w-full sm:w-full mx-auto lg:p-8 sm:p-2">
-        <p>Books Similar to this</p>
-        <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
-            <div>
-                <h4 class="holding-title font-bold">Title</h4>
-                <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    <p>
-                        <strong>Author: </strong>Author Name
-                        <strong>Year Published: </strong>2024
-                    </p>
+        <div class="lg:w-full sm:w-full lg:p-8 sm:p-2 mt-2">
+            <p class="font-semibold">BOOK SUGGESTIONS</p>
+            <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
+                <div>
+                    <h4 class="holding-title font-bold">1. Title</h4>
+                    <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        <p><strong>Author: </strong>Author Name</p>
+                        <p><strong>Year Published: </strong>2024</p>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <a href="book-details.html"> 
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Book Details</button>   
-                </a>
+                <div class="mt-2">
+                    <a href="book-details.html"> 
+                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 md:px-5 md:py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Book Details</button>   
+                    </a>
+                </div>
             </div>
         </div>
     </div>
