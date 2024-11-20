@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misamis University Library</title>
+    <link rel="stylesheet" href="css/ocr-result/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuzzyset.js/0.0.2/fuzzyset.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Upper navbar -->
+    <nav class="navbar navbar-expand navbar-top">
+        <div class="container">
+            <div class="navbar-header mx-auto">
+                <a class="navbar-brand" href="#">
+                    <img src="css/img/letters.png" alt="Logo" class="navbar-logo">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="header-container">
+        <h2>Home</h2>
+    </div>
+
+    <!-- Search bar element -->
+    <div class="search-container">
+
+    </div>
+
+    <p class="msg1">Your subjects:</p>
+
+    <div class="main-content">
+        
+        <div id="matchedSubjectsContainer">
+            <!-- Content goes here -->
+        </div>
+
+    </div>
+
+
+    <!-- Image Type Selection Container -->
+    <div class="modal fade" id="imageTypeModal" tabindex="-1" role="dialog" aria-labelledby="imageTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content imageType-modal-content">
+
+                <div class="modal-header upload-modal-header border-0">
+                    <h5 class="modal-title modal-title mx-auto" id="imageTypeModalLabel">Select to upload method</h5>
+                    <button type="button" class="close close-custom position-absolute" style="right: 15px;" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <div class="row justify-content-center w-100">
+                
+                            <div class="col-md-6 mt-4 mb-4 d-flex justify-content-center">
+                                <div class="card image-type-card" id="gallery-btn">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-desktop fa-3x mb-3" style="color: #000000;"></i>
+                                        <h6 class="card-title">Upload from gallery</h6>
+                                        <p class="card-text">Choose an image to upload in gallery.</p>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="col-md-6 mt-4 mb-4 d-flex justify-content-center">
+                                <div class="card image-type-card" id="camera-btn">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-camera fa-3x mb-3" style="color: #000000;"></i>
+                                        <h6 class="card-title">Upload from Camera</h6>
+                                        <p class="card-text">Use the camera to upload image.</p>
+                                    </div>
+                                </div>
+                            </div>
+                
+                        </div>
+                    </div>
+                </div>                       
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Lower navbar -->
+    <nav class="navbar navbar-expand fixed-bottom navbar-bottom">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="../index.html">
+                    <i class="fas fa-home" style="color: #643D00 !important;"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="upload-btn">
+                    <button class="upload-btn" data-toggle="modal" data-target="#imageTypeModal">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <input type="file" id="fileInput" style="display:none;" accept="image/*">
+                </a>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="exit-button" style="background-color: transparent; border: 0px;">
+                    <i class="fas fa-door-open" style="color: #643D00 !important;"></i>
+                    <span>Exit</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="loading-indicator" style="display: none;">
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.0/dist/tesseract.min.js"></script>
+    <script src="js/get-set-cookie.js"></script>
+    <script src="js/subjects/fetch-match-sub.js"></script>
+    <script src="js/subjects/main-script.js"></script>
+</body>
+</html>
