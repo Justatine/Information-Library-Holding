@@ -69,13 +69,20 @@ $(document).ready(function () {
             let authorName = authorsData[holding.author_id] || 'Unknown';
 
             holdingsHtml += `
-                <div class="holding-card" data-holding-id="${holding.hold_id}">
-                    <h4 class="holding-title">${holding.title}</h4>
-                    <div class="sml-info">
-                        <p>
-                            <strong>Author:</strong> ${authorName}
-                            <strong>Copies:</strong> ${holding.copies}
-                        </p>
+                <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2" data-holding-id="${holding.hold_id}">
+                    <div>
+                        <h4 class="holding-title font-bold">${holding.title}</h4>
+                        <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            <p>
+                                <strong>Author:</strong> ${authorName}
+                                <strong>Copies:</strong> ${holding.copies}
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="suggested-books.html"> 
+                            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Recommended Books</button>   
+                        </a>
                     </div>
                 </div>
             `;

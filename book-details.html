@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misamis University Library</title>
+    <title>Book Detail</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="front-end/css/index/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -24,12 +24,28 @@
     <div class="header-container">    
         <nav class="flex justify-center p-2" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+            <li class="inline-flex items-center">
+                <a href="index.html" class="inline-flex items-center text-sm font-medium text-white hover:text-blue-600 dark:text-white dark:hover:text-white">
+                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                </svg>
+                Home
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <a href="suggested-books.html" class="ms-1 text-sm font-medium text-white hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Suggested Books</a>
+                </div>
+            </li>
             <li aria-current="page">
                 <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                 </svg>
-                <span class="ms-1 text-sm font-medium text-white md:ms-2 dark:text-white">Home</span>
+                <span class="ms-1 text-sm font-medium text-white md:ms-2 dark:text-white">Book Details</span>
                 </div>
             </li>
             </ol>
@@ -44,9 +60,45 @@
         <button class="search-button">Go</button>
     </div>
 
-    <div class="content-container">
+    <div class="lg:w-full sm:w-full mx-auto lg:p-8 sm:p-2">
+        <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
+            <div>
+                <h4 class="holding-title font-bold">Title</h4>
+                <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    <p>
+                        <strong>Author: </strong>Author Name
+                        <strong>Year Published: </strong>2024
+                    </p>
+                </div>
+            </div>
+            <div>
+                <a href="book-details.html"> 
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Book Details</button>   
+                </a>
+            </div>
+        </div>
     </div>
 
+    <div class="lg:w-full sm:w-full mx-auto lg:p-8 sm:p-2">
+        <p>Books Similar to this</p>
+        <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
+            <div>
+                <h4 class="holding-title font-bold">Title</h4>
+                <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    <p>
+                        <strong>Author: </strong>Author Name
+                        <strong>Year Published: </strong>2024
+                    </p>
+                </div>
+            </div>
+            <div>
+                <a href="book-details.html"> 
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Book Details</button>   
+                </a>
+            </div>
+        </div>
+    </div>
+    
     <div id="pagination" class="pagination-container">
         <button id="prev-btn" class="page-btn" disabled>Previous</button>
         <span id="page-numbers"></span>
@@ -77,73 +129,6 @@
             </li>
         </ul>
     </nav>
-
-    <!-- Image Type Selection Container -->
-    <div class="modal fade" id="imageTypeModal" tabindex="-1" role="dialog" aria-labelledby="imageTypeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content imageType-modal-content">
-
-                <div class="modal-header upload-modal-header border-0">
-                    <h5 class="modal-title modal-title mx-auto" id="imageTypeModalLabel">Select to upload method</h5>
-                    <button type="button" class="close close-custom position-absolute" style="right: 15px;" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="container d-flex justify-content-center align-items-center" style="height: 100%;">
-                        <div class="row justify-content-center w-100">
-                
-                            <div class="col-md-6 mt-4 mb-4 d-flex justify-content-center">
-                                <div class="card image-type-card" id="gallery-btn">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-desktop fa-3x mb-3" style="color: #000000;"></i>
-                                        <h6 class="card-title">Upload from gallery</h6>
-                                        <p class="card-text">Choose an image to upload in gallery.</p>
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <div class="col-md-6 mt-4 mb-4 d-flex justify-content-center">
-                                <div class="card image-type-card" id="camera-btn">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-camera fa-3x mb-3" style="color: #000000;"></i>
-                                        <h6 class="card-title">Upload from Camera</h6>
-                                        <p class="card-text">Use the camera to upload image.</p>
-                                    </div>
-                                </div>
-                            </div>
-                
-                        </div>
-                    </div>
-                </div>                       
-
-            </div>
-        </div>
-    </div>
-    
-    <!-- Instructions Modal -->
-    <!-- <div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content instructions-modal-content">
-
-                <div class="modal-header instruction-modal-header border-0">
-                    <h5 class="modal-title modal-title mx-auto" id="imageTypeModalLabel">Important Instruction</h5>
-                    <button type="button" class="close close-custom position-absolute" style="right: 15px;" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body text-center">
-                    <p style="margin-bottom: 5px; margin-top: 15px;">Please ensure that the image you capture with the app's camera is clear, well-lit, and focused to ensure optimal quality and accuracy in processing.</p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" id="got-it-btn" class="btn btn-primary mx-auto" data-dismiss="modal">Got it!</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
     <div id="loading-indicator" style="display: none;">
         <img src="front-end/css/img/mu.png">
         <p>Loading...</p>
@@ -154,7 +139,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script src="front-end/js/get-set-cookie.js"></script>
-    <script src="front-end/js/index/display.js"></script>
+    <!-- <script src="front-end/js/index/display.js"></script> -->
     <script type="text/javascript" src="cordova.js"></script>
     <script>
         document.addEventListener('deviceready', function() {
