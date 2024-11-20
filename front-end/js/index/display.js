@@ -10,8 +10,8 @@ $(document).ready(function () {
     // Function to fetch holdings using AJAX
     function fetchHoldings() {
         $.ajax({
-            url: `https://ilibrary.zreky.muccs.host/back-end/api-holding/v1/holdings`,
-            //url: 'http://localhost/ilibrary/admin-side/back-end/api-holding/v1/holdings',
+            // url: `https://ilibrary.zreky.muccs.host/back-end/api-holding/v1/holdings`,
+            url: 'http://localhost/api/api-holding/?p=v1/holdings',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -32,8 +32,8 @@ $(document).ready(function () {
     // Function to get authors and publishers data using promises
     function getAuthorsData() {
         return $.ajax({
-            url: `https://ilibrary.zreky.muccs.host/back-end/api-author/v1/authors`,
-            //url: 'http://localhost/ilibrary/admin-side/back-end/api-author/v1/authors',
+            // url: `https://ilibrary.zreky.muccs.host/back-end/api-author/v1/authors`,
+            url: 'http://localhost/api/api-author/?p=v1/authors',
             type: 'GET',
             success: function (data) {
                 authorsData = mapAuthorsData(data); // Map authors data to ID
@@ -79,7 +79,7 @@ $(document).ready(function () {
                         </div>
                     </div>
                     <div class="mt-2">
-                        <a href="book-details.html"> 
+                        <a href="book-details.html?holdingid=${holding.hold_id}"> 
                             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 md:px-5 md:py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Book Details</button>   
                         </a>
                     </div>
