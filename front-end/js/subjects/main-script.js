@@ -91,10 +91,10 @@ $(document).ready(function() {
         event.preventDefault(); // Prevent default anchor click behavior
 
         const subjectId = $(this).data('subject-id'); 
-        setCookie("res-subId", subjectId, 7);
+        // setCookie("res-subId", subjectId, 7);
 
         // Redirect to the desired page
-        window.location.href = 'subject-holdings.html';
+        window.location.href = `subject-holdings.html?subjectId=${subjectId}`;
     });
 
     // Optionally, clear session storage if not needed anymore
