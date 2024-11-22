@@ -122,7 +122,7 @@ async function preprocessImage(imgSrc) {
                 cv.imshow(processedCanvas, grayImage);
                 
 
-                const dataUrl = grayImage.toDataURL();
+                const dataUrl = canvas.toDataURL();
 
                 // Resolve the promise with the data URL
                 resolve(dataUrl);
@@ -138,10 +138,11 @@ async function preprocessImage(imgSrc) {
                 hybridResult.delete();
                 hybridGray.delete();
                 adaptiveThresholded.delete();
+                
             } catch (error) {
                 console.error("Error during image preprocessing:", error);
                 alert("Error during image preprocessing:", error);
-                window.location.replace('../index.html');
+                // window.location.replace('../index.html');
                 reject(error);
             }
         };

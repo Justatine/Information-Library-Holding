@@ -1,7 +1,7 @@
 // Function to fetch subjects from the API
 function fetchSubjects() {
     return $.ajax({
-        url: 'https://ilibrary.zreky.muccs.host/back-end/api-subject/v1/subjects',
+        url: url+'api-subject/?p=v1/subjects',
         method: 'GET',
         dataType: 'json',
         success: function(data) {
