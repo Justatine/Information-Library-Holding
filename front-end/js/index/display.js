@@ -11,11 +11,11 @@ $(document).ready(function () {
     function fetchHoldings() {
         $.ajax({
             // url: `https://ilibrary.zreky.muccs.host/back-end/api-holding/v1/holdings`,
-            url: 'http://localhost/api/api-holding/?p=v1/holdings',
+            url: url+'api-holding/holdings.php',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                holdingsData = data; // Store the fetched holdings data
+                holdingsData = data.data; // Store the fetched holdings data
                 filteredHoldingsData = holdingsData; // Initially, filtered data is the same as fetched data
                 $.when(getAuthorsData()).done(function () {
                     displayHoldings(currentPage); // Display the holdings data after authors and publishers are loaded
