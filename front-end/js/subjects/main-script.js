@@ -56,6 +56,12 @@ $(document).ready(function() {
         });
 
     fetchSubjects().then(subjects => {
+        // Ensure subjects is an array
+        if (!Array.isArray(subjects)) {
+            console.warn('Subjects is not an array:', subjects);
+            subjects = Array.isArray(subjects.data) ? subjects.data : [];  // Try to get data property if it exists
+        }
+        
         // Ensure matchSubjects is called only after subjects are fetched
         const matchedSubjects = matchSubjects(ocrResult, subjects);
         
@@ -64,7 +70,7 @@ $(document).ready(function() {
         const container = $('#matchedSubjectsContainer');
         container.empty();
 
-        if (matchedSubjects && matchedSubjects.length > 0) {
+        if (Array.isArray(matchedSubjects) && matchedSubjects.length > 0) {
             matchedSubjects.forEach(subject => {
                 const subjectHtml = `<div class="result-card" data-subject-id="${subject.id}" color: inherit;">
                                         <a href="#" style="text-decoration: none; color: inherit;">

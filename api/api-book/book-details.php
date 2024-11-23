@@ -18,7 +18,7 @@ try {
             $query = "SELECT a.*,  CONCAT(b.fname, ' ', b.lname) AS author
                         FROM holdings AS a
                         INNER JOIN authors AS b
-                        ON a.author_id = b.author_id
+                        ON a.author = b.author_id
                         WHERE a.hold_id = ?";
             $sql= $connection->prepare($query);
             $sql->bind_param("i",$id);
@@ -31,7 +31,7 @@ try {
                 $similar_query = "SELECT a.*, CONCAT(b.fname, ' ', b.lname) AS author
                                 FROM holdings AS a
                                 INNER JOIN authors AS b
-                                ON a.author_id = b.author_id
+                                ON a.author = b.author_id
                                 WHERE a.title = ? AND a.hold_id != ?";
                 $similar_sql = $connection->prepare($similar_query);
                 $similar_sql->bind_param("si", $row['title'], $id);
@@ -50,7 +50,7 @@ try {
                 $related_query = "SELECT a.*, CONCAT(b.fname, ' ', b.lname) AS author
                                 FROM holdings AS a
                                 INNER JOIN authors AS b
-                                ON a.author_id = b.author_id
+                                ON a.author = b.author_id
                                 WHERE a.title LIKE ? AND a.hold_id != ? AND a.title != ?";
                 $related_sql = $connection->prepare($related_query);
                 $related_sql->bind_param("sis", $first_two_words, $id, $row['title']);

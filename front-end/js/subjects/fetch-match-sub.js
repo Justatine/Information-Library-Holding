@@ -1,12 +1,12 @@
 // Function to fetch subjects from the API
 function fetchSubjects() {
     return $.ajax({
-        url: url+'api-subject/?p=v1/subjects',
+        url: url+'api-subject/index.php',
         method: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log('Fetched subjects:', data);
-            return data.subjects; 
+            console.log('Fetched subjects:', data.data);
+            return data.data.subjects; 
         },
         error: function(err) {
             console.error('Error fetching subjects:', err);

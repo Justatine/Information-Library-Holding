@@ -15,20 +15,39 @@ try {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
 
-            $query = "SELECT a.*,  CONCAT(b.fname, ' ', b.lname) AS author
-                        FROM holdings AS a
-                        INNER JOIN authors AS b
-                        ON a.author_id = b.author_id
-                        WHERE a.hold_id = ?";
-            $sql= $connection->prepare($query);
-            $sql->bind_param("i",$id);
+            // First get the subject name
+            $subjectQuery = "SELECT sub_name FROM subjects WHERE sub_id = ?";
+            $stmt = $connection->prepare($subjectQuery);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $subjectResult = $stmt->get_result();
+            $subjectRow = $subjectResult->fetch_assoc();
+            
+            // Then get the books
+            $query = "SELECT c.*, CONCAT(d.fname,' ',d.lname) as authorName
+                FROM subjects AS a
+                INNER JOIN subjects_holdings AS b
+                ON a.sub_id=b.sub_id
+                LEFT JOIN holdings AS c
+                ON b.hold_id=c.hold_id
+                INNER JOIN authors AS d
+                ON c.author=d.author_id
+                WHERE a.sub_id = ?";
+            $sql = $connection->prepare($query);
+            $sql->bind_param("i", $id);
             $sql->execute();
-            $result=$sql->get_result();
-            if ($result->num_rows>0) {
-                $row=$result->fetch_assoc();
-                $response['data'] = $row;
-            } else {
-                $response['data'] = array();
+            $result = $sql->get_result();
+            
+            // Structure the response
+            $response['subject'] = array(
+                'name' => $subjectRow['sub_name'],
+                'suggestedBooks' => array()
+            );
+            
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $response['subject']['suggestedBooks'][] = $row;
+                }
             }
         }
     }

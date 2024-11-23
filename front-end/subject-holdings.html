@@ -24,7 +24,7 @@
         <nav class="flex justify-center p-2" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
-                <a href="index.html" class="inline-flex items-center text-sm font-medium text-white hover:text-blue-600 dark:text-white dark:hover:text-white">
+                <a href="subjects.html" class="inline-flex items-center text-sm font-medium text-white hover:text-blue-600 dark:text-white dark:hover:text-white">
                 <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                 </svg>
@@ -53,21 +53,10 @@
 
     <div class="content-container">
         <div class="lg:w-full sm:w-full mx-auto lg:p-8 sm:p-2">
-            <p>Suggested Books for <span id="subject">Subject</span></p>
+            <p>Suggested Books for <span id="subject-name" class="font-bold">Subject</span></p>
         </div>
-        <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2" data-holding-id="${holding.hold_id}">
-            <div>
-                <h4 class="holding-title font-bold">${index + 1}. ${holding.title}</h4>
-                <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    <p><strong>Author: </strong>${authorName}</p>
-                    <p><strong>Copies: </strong>${holding.copies}</p>
-                </div>
-            </div>
-            <div class="mt-2">
-                <a href="book-details.html?holdingid=${holding.hold_id}"> 
-                    <button type="button" class="text-white bg-[#FEB440] hover:bg-[#3F1D22] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 md:px-5 md:py-2.5 me-2 mb-2 focus:outline-none">Book Details</button>   
-                </a>
-            </div>
+        <div id="suggested-subjects">
+
         </div>
     </div>
 
@@ -80,7 +69,7 @@
     <nav class="navbar navbar-expand fixed-bottom navbar-bottom">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="../index.html">
+                <a class="nav-link" href="subjects.html">
                     <i class="fas fa-home" style="color: #643D00 !important;"></i>
                     <span>Home</span>
                 </a>
