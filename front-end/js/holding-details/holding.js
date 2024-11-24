@@ -8,7 +8,7 @@ $(document).ready(function () {
         data: { id:holdingId },
         dataType: "json",
         success: function (response) {
-            // console.log(response.data);
+            console.log(response.data);
             $("#_title").html(response.data.title);
             $("#_author").html(response.data.author);
             $("#_yearpublised").html(response.data.published_year);

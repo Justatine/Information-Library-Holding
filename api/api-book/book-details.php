@@ -49,10 +49,9 @@ try {
                                 INNER JOIN authors AS b
                                 ON a.author = b.author_id
                                 WHERE a.keyword LIKE CONCAT('%', ?, '%') 
-                                AND a.hold_id != ? 
-                                AND a.title != ?";
+                                AND a.hold_id != ? ";
                 $related_sql = $connection->prepare($related_query);
-                $related_sql->bind_param("sis", $row['keyword'], $id, $row['title']);
+                $related_sql->bind_param("si", $row['keyword'], $id);
                 $related_sql->execute();
                 $related_result = $related_sql->get_result();
                 

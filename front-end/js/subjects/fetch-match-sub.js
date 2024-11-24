@@ -66,3 +66,45 @@ function matchSubjects(ocrText, subjects) {
     console.log('Matched Subjects:', matchedSubjects);  // Debug: Show all matched subjects at the end
     return matchedSubjects;
 }
+
+function extractCourseAndYear(ocrText) {
+    const processedText = ocrText.toUpperCase();
+    
+    const coursePatterns = {
+        'BSBA': 'BSBA',
+    };
+
+    const yearPatterns = {
+        '1': '1',
+        '-1': '1',
+        '2': '2',
+        '-2': '2',
+        '3': '3',
+        '-3': '3',
+        '4': '4',
+        '-4': '4'
+    };
+
+    let result = {
+        course: null,
+        year: null
+    };
+
+    // Match course
+    for (let [shortForm, fullName] of Object.entries(coursePatterns)) {
+        if (processedText.includes(shortForm)) {
+            result.course = fullName;
+            break;
+        }
+    }
+
+    // Match year (now handles formats like "BSBA-3" or "BSBA 3")
+    for (let [pattern, fullForm] of Object.entries(yearPatterns)) {
+        if (processedText.includes(pattern)) {
+            result.year = fullForm;
+            break;
+        }
+    }
+
+    return result;
+}

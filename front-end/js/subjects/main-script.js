@@ -35,6 +35,9 @@ $(document).ready(function() {
     console.log(proImageData);
     console.log('OCR Result:' + ocrResult);
 
+    const courseAndYear = extractCourseAndYear(ocrResult);
+    console.log('Extracted Course and Year:', courseAndYear);
+
         // Gallery button event listener
         document.getElementById('gallery-btn').addEventListener('click', function() {
             $('#imageTypeModal').modal('hide');

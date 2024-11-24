@@ -36,27 +36,28 @@ async function performOCR(imageDataUrl) {
     });
 }
 
-// Function to send the OCR result to the PHP API using jQuery AJAX
 function logOcrResult(ocrResult) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: 'https://ilibrary.zreky.muccs.host/back-end/api-log/v1/ocr_log',
-            type: 'POST',
-            data: { ocr_result: ocrResult },
-            success: function(response) {
-                console.log('Server Response:', response);
-                if (response.msg === 'OCR result logged successfully') {
-                    //console.log('OCR result successfully logged to database');
+            type: "POST",
+            url: url+"api-log/logs.php",
+            data: {
+                ocr_result: ocrResult
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.success){   
+                    console.log(response.message);
                     resolve();
-                } else {
-                    console.error('Failed to log OCR result:', response);
-                    resolve();  // Resolve even if there's a server error to continue the flow
+                }else{
+                    console.error(response.message);
+                    resolve();
                 }
             },
             error: function(xhr, status, error) {
                 //console.error('Error logging OCR result:', xhr.responseText, error);
                 reject(error);  // Reject if there’s an AJAX error
             }
-        });
+        })
     });
 }
