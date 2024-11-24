@@ -35,9 +35,6 @@ $(document).ready(function() {
     console.log(proImageData);
     console.log('OCR Result:' + ocrResult);
 
-    const courseAndYear = extractCourseAndYear(ocrResult);
-    console.log('Extracted Course and Year:', courseAndYear);
-
         // Gallery button event listener
         document.getElementById('gallery-btn').addEventListener('click', function() {
             $('#imageTypeModal').modal('hide');
@@ -73,21 +70,34 @@ $(document).ready(function() {
         const container = $('#matchedSubjectsContainer');
         container.empty();
 
+        const courseAndYear = extractCourseAndYear(ocrResult);
+        console.log('Extracted Course and Year:', courseAndYear);
+        
         if (Array.isArray(matchedSubjects) && matchedSubjects.length > 0) {
-            matchedSubjects.forEach(subject => {
-                const subjectHtml = `<div class="result-card" data-subject-id="${subject.id}" color: inherit;">
-                                        <a href="#" style="text-decoration: none; color: inherit;">
-                                            <div class="content1">
-                                                <h2>${subject.name}</h2>
-                                                <p>${subject.desc}</p>
-                                            </div>
-                                            <div class="content2">
-                                                <span id="arrow">&gt;</span> <!-- Greater than symbol -->
-                                            </div>
-                                        </a>
-                                    </div>`;
-                container.append(subjectHtml);
-            });
+            // Filter subjects where courseAndYear matches subject.crs_and_yr
+            const filteredSubjects = matchedSubjects.filter(subject => 
+                subject.crs_and_yr === courseAndYear
+            );
+
+            if (filteredSubjects.length > 0) {
+                filteredSubjects.forEach(subject => {
+                    const subjectHtml = `<div class="result-card" data-subject-id="${subject.id}" color: inherit;">
+                                            <a href="#" style="text-decoration: none; color: inherit;">
+                                                <div class="content1">
+                                                    <h2>${subject.name}</h2>
+                                                    <p>${subject.desc}</p>
+                                                    <p>${subject.crs_and_yr}</p>    
+                                                </div>
+                                                <div class="content2">
+                                                    <span id="arrow">&gt;</span>
+                                                </div>
+                                            </a>
+                                        </div>`;
+                    container.append(subjectHtml);
+                });
+            } else {
+                container.append('<p>No subjects matched with the course and year.</p>');
+            }
         } else {
             container.append('<p>No subjects matched with the OCR text.</p>');
         }

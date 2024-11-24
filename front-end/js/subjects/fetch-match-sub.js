@@ -55,7 +55,8 @@ function matchSubjects(ocrText, subjects) {
                 matchedSubjects.push({
                     id: subject.sub_id,
                     name: subject.sub_name,
-                    desc: subject.sub_desc
+                    desc: subject.sub_desc,
+                    crs_and_yr: subject.course+' - '+subject.year_level
                 });
             } else {
                 console.log(`No match for "${subject.sub_name}" (with or without spaces) in OCR Text`); // Debug: Log if no match found
@@ -63,48 +64,26 @@ function matchSubjects(ocrText, subjects) {
         }
     });
 
-    console.log('Matched Subjects:', matchedSubjects);  // Debug: Show all matched subjects at the end
+    console.log('Matched Subjects:', matchedSubjects);  
     return matchedSubjects;
 }
 
 function extractCourseAndYear(ocrText) {
-    const processedText = ocrText.toUpperCase();
+    const courseYearRegex = /Course\s*&\s*Year\s*:\s*([A-Za-z]+)-([1-4])/i;
     
-    const coursePatterns = {
-        'BSBA': 'BSBA',
-    };
-
-    const yearPatterns = {
-        '1': '1',
-        '-1': '1',
-        '2': '2',
-        '-2': '2',
-        '3': '3',
-        '-3': '3',
-        '4': '4',
-        '-4': '4'
-    };
+    const match = ocrText.match(courseYearRegex);
 
     let result = {
         course: null,
         year: null
     };
 
-    // Match course
-    for (let [shortForm, fullName] of Object.entries(coursePatterns)) {
-        if (processedText.includes(shortForm)) {
-            result.course = fullName;
-            break;
-        }
+    if (match) {
+        result.course = match[1].toUpperCase(); 
+        result.year = match[2];                
     }
 
-    // Match year (now handles formats like "BSBA-3" or "BSBA 3")
-    for (let [pattern, fullForm] of Object.entries(yearPatterns)) {
-        if (processedText.includes(pattern)) {
-            result.year = fullForm;
-            break;
-        }
-    }
-
-    return result;
+    let finalResult = result.course+' - '+result.year;  
+    
+    return finalResult;
 }
