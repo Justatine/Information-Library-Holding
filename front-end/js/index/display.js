@@ -65,7 +65,7 @@ $(document).ready(function () {
         }
 
         let holdingsHtml = '';
-        holdingsHtml += `<p class="font-semibold">Recommendations</p>`;
+        holdingsHtml += `<p class="font-semibold">Library Holdings</p>`;
         $.each(holdingsToDisplay, function (index, holding) {
             let authorName = authorsData[holding.author_id] || 'Unknown';
 

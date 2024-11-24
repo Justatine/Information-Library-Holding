@@ -43,17 +43,16 @@ try {
                     $similar_books[] = $similar_row;
                 }
                 
-                // Add query for first two words matches
-                $title_words = explode(' ', $row['title']);
-                $first_two_words = implode(' ', array_slice($title_words, 0, 2)) . '%';
-                
+                // Use LIKE with wildcards to match partial keywords
                 $related_query = "SELECT a.*, CONCAT(b.fname, ' ', b.lname) AS author
                                 FROM holdings AS a
                                 INNER JOIN authors AS b
                                 ON a.author = b.author_id
-                                WHERE a.title LIKE ? AND a.hold_id != ? AND a.title != ?";
+                                WHERE a.keyword LIKE CONCAT('%', ?, '%') 
+                                AND a.hold_id != ? 
+                                AND a.title != ?";
                 $related_sql = $connection->prepare($related_query);
-                $related_sql->bind_param("sis", $first_two_words, $id, $row['title']);
+                $related_sql->bind_param("sis", $row['keyword'], $id, $row['title']);
                 $related_sql->execute();
                 $related_result = $related_sql->get_result();
                 

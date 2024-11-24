@@ -19,10 +19,16 @@ $(document).ready(function () {
                     suggested_books += `
                         <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
                             <div>
-                                <h4 class="holding-title font-bold">${index+1}. <span class="bg-gray-200 p-1 rounded-lg">${element.title.split(' ')[0]}</span> ${element.title.split(' ').slice(1).join(' ')}</h4>
+                                <h4 class="holding-title font-bold">${index+1}.  ${element.title}</h4>
                                 <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                     <p><strong>Author: </strong>${element.author}</p>
                                     <p><strong>Year Published: </strong>${element.published_year}</p>
+                                    
+                                    <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                        <span class="font-semibold">Keywords: </span> 
+                                        <span class="bg-gray-200 p-1 rounded-lg">${element.keyword}</span>
+                                    </p>
+
                                 </div>
                             </div>
                             <div class="mt-2">
