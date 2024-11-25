@@ -56,14 +56,14 @@ $(document).ready(function () {
                 </div>
 
                 <div class="bg-gray-50 p-6 border-t border-gray-200">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
                         <div class="flex items-center space-x-2">
                             <span class="text-sm text-gray-500">Department:</span>
-                            <span class="text-base font-medium" id="_department">${response.data.deptname}</span>
+                            <span class="font-medium sm:text-sm lg:text-base" id="_department">${response.data.deptname}</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-sm text-gray-500">Hold ID:</span>
-                            <span class="text-base font-medium" id="_hold_id"># ${response.data.hold_id}  </span>
+                            <span class="text-base font-medium" id="_hold_id"># ${response.data.hold_id}</span>
                         </div>
                     </div>
                 </div>  
