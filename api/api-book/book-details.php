@@ -15,10 +15,12 @@ try {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
 
-            $query = "SELECT a.*,  CONCAT(b.fname, ' ', b.lname) AS author
+            $query = "SELECT a.*,  CONCAT(b.fname, ' ', b.lname) AS author, c.deptname
                         FROM holdings AS a
                         INNER JOIN authors AS b
                         ON a.author = b.author_id
+						INNER JOIN department AS c
+                        ON a.department = c.dept_id
                         WHERE a.hold_id = ?";
             $sql= $connection->prepare($query);
             $sql->bind_param("i",$id);

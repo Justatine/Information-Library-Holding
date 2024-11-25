@@ -11,8 +11,65 @@ $(document).ready(function () {
             console.log(response.data);
             $("#_title").html(response.data.title);
             $("#_author").html(response.data.author);
-            $("#_yearpublised").html(response.data.published_year);
+            
+            var holding_display = "";  
+            holding_display += `
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Access Number</span>
+                            <span class="text-base font-medium" id="_access_num">
+                            ${response.data.accss_num}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Call Number</span>
+                            <span class="text-base font-medium" id="_call_num">${response.data.call_num}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Published Year</span>
+                            <span class="text-base font-medium" id="_published_year">${response.data.published_year}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Course</span>
+                            <span class="text-base font-medium" id="_course">${response.data.course}</span>
+                        </div>
+                    </div>
 
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Available Copies</span>
+                            <span class="text-base font-medium" id="_av_copies">${response.data.av_copies}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Total Copies</span>
+                            <span class="text-base font-medium" id="_copies">${response.data.copies}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Subject Name</span>
+                            <span class="text-base font-medium" id="_sub_name">${response.data.sub_name}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm text-gray-500">Keywords</span>
+                            <span class="text-base font-medium" id="_keyword">${response.data.keyword}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Department:</span>
+                            <span class="text-base font-medium" id="_department">${response.data.deptname}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Hold ID:</span>
+                            <span class="text-base font-medium" id="_hold_id"># ${response.data.hold_id}  </span>
+                        </div>
+                    </div>
+                </div>  
+            `
+            $("#holding-display").html(holding_display);
+            
             var suggested_books = "";
             if (response.data.suggested_books.length > 0) {
                 $.map(response.data.suggested_books, function (element, index) {
