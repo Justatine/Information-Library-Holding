@@ -15,6 +15,7 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'json',
             success: function (data) {
+                console.log(data.data);
                 holdingsData = data.data; // Store the fetched holdings data
                 filteredHoldingsData = holdingsData; // Initially, filtered data is the same as fetched data
                 $.when(getAuthorsData()).done(function () {
@@ -59,6 +60,8 @@ $(document).ready(function () {
         const endIndex = startIndex + rowsPerPage;
         const holdingsToDisplay = filteredHoldingsData.slice(startIndex, endIndex);
 
+        console.log("Holdings to display:", holdingsToDisplay); // Debug log
+
         if (holdingsToDisplay.length === 0) {
             contentContainer.html("<p>No holdings available.</p>");
             return;
@@ -67,14 +70,21 @@ $(document).ready(function () {
         let holdingsHtml = '';
         holdingsHtml += `<p class="font-semibold">Library Holdings</p>`;
         $.each(holdingsToDisplay, function (index, holding) {
-            let authorName = authorsData[holding.author_id] || 'Unknown';
+            console.log("Current holding:", holding); // Debug log
+            console.log("Authors array:", holding.authors); // Debug log
+
+            let authorsDisplay = holding.authors 
+                ? holding.authors.map(author => author.authors).join(', ')
+                : 'Unknown';
+
+            console.log("Authors display:", authorsDisplay); // Debug log
 
             holdingsHtml += `
                 <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2" data-holding-id="${holding.hold_id}">
                     <div>
                         <h4 class="holding-title font-bold">${index + 1}. ${holding.title}</h4>
                         <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            <p><strong>Author: </strong>${authorName}</p>
+                            <p><strong>Author/s: </strong>${authorsDisplay}</p>
                             <p><strong>Copies: </strong>${holding.copies}</p>
                         </div>
                     </div>

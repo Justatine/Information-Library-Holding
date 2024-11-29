@@ -30,18 +30,30 @@ try {
                 $response['data'] = array();
             }
         }else{
-            $query = "SELECT a.*, CONCAT(b.fname,' ',b.lname) AS author
-                        FROM holdings a
-                        INNER JOIN authors b
-                        ON a.author=b.author_id";
-            $sql=$connection->prepare($query);
+            $query = "SELECT a.*, c.fname, c.lname
+                        FROM holdings AS a
+                        LEFT JOIN holdings_authors AS b
+                        ON a.hold_id=b.hold_id
+                        LEFT JOIN authors AS c
+                        ON b.author_id=c.author_id";
+            $sql = $connection->prepare($query);
             $sql->execute();
-            $result=$sql->get_result();
-            if ($result->num_rows>0) {
-                while ($row=$result->fetch_assoc()) {
-                    $response['data'][]=$row;
+            $result = $sql->get_result();
+            
+            $holdings = array();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $holdId = $row['hold_id'];
+                    if (!isset($holdings[$holdId])) {
+                        $holdings[$holdId] = $row;
+                        $holdings[$holdId]['authors'] = array();
+                    }
+                    $holdings[$holdId]['authors'][] = array(
+                        'authors' => $row['fname'].' '.$row['lname']
+                    );
                 }
-            }else{
+                $response['data'] = array_values($holdings);
+            } else {
                 $response['data'] = array();
             }
         }
