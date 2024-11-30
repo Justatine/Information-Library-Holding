@@ -15,25 +15,40 @@ try {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
 
-            $query = "SELECT a.*,  CONCAT(b.fname, ' ', b.lname) AS author, c.deptname
+            $query = "SELECT a.*, c.deptname
                         FROM holdings AS a
-                        INNER JOIN authors AS b
-                        ON a.author = b.author_id
-						INNER JOIN department AS c
+                        INNER JOIN department AS c
                         ON a.department = c.dept_id
                         WHERE a.hold_id = ?";
-            $sql= $connection->prepare($query);
-            $sql->bind_param("i",$id);
+            $sql = $connection->prepare($query);
+            $sql->bind_param("i", $id);
             $sql->execute();
-            $result=$sql->get_result();
-            if ($result->num_rows>0) {
-                $row=$result->fetch_assoc();
+            $result = $sql->get_result();
+            
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
                 
-                // Add query for exact title matches
-                $similar_query = "SELECT a.*, CONCAT(b.fname, ' ', b.lname) AS author
+                // Get authors for the book
+                $authors_query = "SELECT CONCAT(d.fname, ' ', d.lname) AS author_name, d.*
+                                FROM holdings_authors AS b
+                                INNER JOIN authors AS d
+                                ON b.author_id = d.author_id
+                                WHERE b.hold_id = ?";
+                $authors_sql = $connection->prepare($authors_query);
+                $authors_sql->bind_param("i", $id);
+                $authors_sql->execute();
+                $authors_result = $authors_sql->get_result();
+                
+                $authors = array();
+                while($author_row = $authors_result->fetch_assoc()) {
+                    $authors[] = $author_row;
+                }
+                
+                $row['authors'] = $authors;
+
+                // Similar books query revision
+                $similar_query = "SELECT a.*
                                 FROM holdings AS a
-                                INNER JOIN authors AS b
-                                ON a.author = b.author_id
                                 WHERE a.title = ? AND a.hold_id != ?";
                 $similar_sql = $connection->prepare($similar_query);
                 $similar_sql->bind_param("si", $row['title'], $id);
@@ -42,16 +57,24 @@ try {
                 
                 $similar_books = array();
                 while($similar_row = $similar_result->fetch_assoc()) {
+                    // Get authors for each similar book
+                    $authors_sql->bind_param("i", $similar_row['hold_id']);
+                    $authors_sql->execute();
+                    $authors_result = $authors_sql->get_result();
+                    
+                    $book_authors = array();
+                    while($author_row = $authors_result->fetch_assoc()) {
+                        $book_authors[] = $author_row;
+                    }
+                    $similar_row['authors'] = $book_authors;
                     $similar_books[] = $similar_row;
                 }
                 
-                // Use LIKE with wildcards to match partial keywords
-                $related_query = "SELECT a.*, CONCAT(b.fname, ' ', b.lname) AS author
+                // Related books query revision
+                $related_query = "SELECT a.*
                                 FROM holdings AS a
-                                INNER JOIN authors AS b
-                                ON a.author = b.author_id
                                 WHERE a.keyword LIKE CONCAT('%', ?, '%') 
-                                AND a.hold_id != ? ";
+                                AND a.hold_id != ?";
                 $related_sql = $connection->prepare($related_query);
                 $related_sql->bind_param("si", $row['keyword'], $id);
                 $related_sql->execute();
@@ -59,9 +82,19 @@ try {
                 
                 $related_books = array();
                 while($related_row = $related_result->fetch_assoc()) {
+                    // Get authors for each related book
+                    $authors_sql->bind_param("i", $related_row['hold_id']);
+                    $authors_sql->execute();
+                    $authors_result = $authors_sql->get_result();
+                    
+                    $book_authors = array();
+                    while($author_row = $authors_result->fetch_assoc()) {
+                        $book_authors[] = $author_row;
+                    }
+                    $related_row['authors'] = $book_authors;
                     $related_books[] = $related_row;
                 }
-                
+
                 $row['similar_books'] = $similar_books;
                 $row['suggested_books'] = $related_books;
                 $response['data'] = $row;

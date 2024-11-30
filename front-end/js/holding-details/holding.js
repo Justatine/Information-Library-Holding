@@ -8,10 +8,18 @@ $(document).ready(function () {
         data: { id:holdingId },
         dataType: "json",
         success: function (response) {
-            console.log(response.data);
+            // console.log(response.data);
             $("#_title").html(response.data.title);
-            $("#_author").html(response.data.author);
             
+            // console.log('Author data:', response.data.authors);
+            let authorsDisplay = response.data.authors 
+                ? response.data.authors.map(author => 
+                    `<span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-lg text-sm mr-2">${author.author_name}</span>`
+                ).join('')
+                : '<span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-lg text-sm mr-2">Unknown</span>';
+            
+            $("#_author").html(authorsDisplay);
+                        
             var holding_display = "";  
             holding_display += `
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -73,19 +81,26 @@ $(document).ready(function () {
             var suggested_books = "";
             if (response.data.suggested_books.length > 0) {
                 $.map(response.data.suggested_books, function (element, index) {
+                    // console.log(response.data.suggested_books);   
                     suggested_books += `
                         <div class="bg-gray-50 hover:bg-gray-100 flex flex-wrap justify-between p-4 rounded-lg mt-2">
                             <div>
                                 <h4 class="holding-title font-bold">${index+1}.  ${element.title}</h4>
                                 <div id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                    <p><strong>Author: </strong>${element.author}</p>
+                                    <p><strong>Author: </strong>
+                                        ${element.authors ? 
+                                            element.authors.map(author => 
+                                                `<span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-lg text-sm mr-2">${author.author_name}</span>`
+                                            ).join('') 
+                                            : '<span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-lg text-sm mr-2">Unknown</span>'
+                                        }
+                                    </p>
                                     <p><strong>Year Published: </strong>${element.published_year}</p>
                                     
                                     <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                         <span class="font-semibold">Keywords: </span> 
                                         <span class="bg-gray-200 p-1 rounded-lg">${element.keyword}</span>
                                     </p>
-
                                 </div>
                             </div>
                             <div class="mt-2">
