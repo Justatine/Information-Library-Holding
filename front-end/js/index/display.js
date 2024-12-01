@@ -33,8 +33,8 @@ $(document).ready(function () {
     // Function to get authors and publishers data using promises
     function getAuthorsData() {
         return $.ajax({
-            // url: `https://ilibrary.zreky.muccs.host/back-end/api-author/v1/authors`,
-            url: 'http://localhost/api/api-author/?p=v1/authors',
+            url: `https://ilibrary.zreky.muccs.host/back-end/api-author/v1/authors`,
+            // url: 'http://localhost/api/api-author/?p=v1/authors',
             type: 'GET',
             success: function (data) {
                 authorsData = mapAuthorsData(data); // Map authors data to ID
