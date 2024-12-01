@@ -76,11 +76,11 @@ $(document).ready(function() {
         if (Array.isArray(matchedSubjects) && matchedSubjects.length > 0) {
             // Filter subjects where courseAndYear matches subject.crs_and_yr
             const filteredSubjects = matchedSubjects.filter(subject => {
-                console.log('Full subject object:', subject);
-                console.log('subject.crs_and_yr:', subject.crs_and_yr);
+                // console.log('Full subject object:', subject);
+                // console.log('subject.crs_and_yr:', subject.crs_and_yr);
                 // Check if both values exist before comparing
                 if (!subject.crs_and_yr || !courseAndYear) {
-                    console.log('Skipping subject due to missing crs_and_yr or courseAndYear');
+                    // console.log('Skipping subject due to missing crs_and_yr or courseAndYear');
                     return false;
                 }
                 return subject.crs_and_yr.replace(/\s+/g, '') === courseAndYear.replace(/\s+/g, '');

@@ -30,8 +30,10 @@ try {
                 ON a.sub_id=b.sub_id
                 LEFT JOIN holdings AS c
                 ON b.hold_id=c.hold_id
-                INNER JOIN authors AS d
-                ON c.author=d.author_id
+                LEFT JOIN holdings_authors AS e
+                on b.hold_id=e.hold_id
+                LEFT JOIN authors AS d
+                ON e.author_id =d.author_id
                 WHERE a.sub_id = ?";
             $sql = $connection->prepare($query);
             $sql->bind_param("i", $id);
