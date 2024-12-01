@@ -30,7 +30,7 @@ try {
         //         $response['data'] = array();
         //     }
         // }else{
-            $query = "SELECT * FROM subjects";
+            $query = "SELECT *, LOWER(sub_name) as sub_name FROM subjects";
             $sql=$connection->prepare($query);
             $sql->execute();
             $result=$sql->get_result();

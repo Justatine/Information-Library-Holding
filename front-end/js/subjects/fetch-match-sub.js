@@ -36,11 +36,14 @@ function matchSubjects(ocrText, subjects) {
 
         // If the subject with spaces matches, add it to matchedSubjects
         if (isMatchWithSpaces) {
+            console.log('piste with spaces')
+
             console.log(`Match Found (with spaces): "${subjectNameWithSpace}" is found in OCR Text!`);
             matchedSubjects.push({
                 id: subject.sub_id,
                 name: subject.sub_name,
-                desc: subject.sub_desc
+                desc: subject.sub_desc,
+                crs_and_yr: subject.course+' - '+subject.year_level
             });
         } else {
             // If no match with spaces, check for subject without spaces
@@ -51,6 +54,7 @@ function matchSubjects(ocrText, subjects) {
             console.log(`Matching "${subjectNameWithoutSpace}" (without spaces) in OCR Text: ${isMatchWithoutSpaces}`);  // Debug: Log if the subject without spaces matches
 
             if (isMatchWithoutSpaces) {
+                console.log('piste no spaces')
                 console.log(`Match Found (without spaces): "${subjectNameWithoutSpace}" is found in OCR Text!`);  // Debug: Log if match is found
                 matchedSubjects.push({
                     id: subject.sub_id,
