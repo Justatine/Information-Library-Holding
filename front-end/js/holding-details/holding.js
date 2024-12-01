@@ -25,7 +25,7 @@ $(document).ready(function () {
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-4">
                         <div class="flex flex-col">
-                            <span class="text-sm text-gray-500">Access Number</span>
+                            <span class="text-sm text-gray-500">Accession Number</span>
                             <span class="text-base font-medium" id="_access_num">
                             ${response.data.accss_num}</span>
                         </div>
@@ -38,7 +38,7 @@ $(document).ready(function () {
                             <span class="text-base font-medium" id="_published_year">${response.data.published_year}</span>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-sm text-gray-500">Course</span>
+                            <span class="text-sm text-gray-500">Book Collection</span>
                             <span class="text-base font-medium" id="_course">${response.data.course}</span>
                         </div>
                     </div>
