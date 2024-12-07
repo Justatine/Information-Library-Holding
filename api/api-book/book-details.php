@@ -11,7 +11,6 @@ $connection->begin_transaction();
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
 
@@ -24,10 +23,10 @@ try {
             $sql->bind_param("i", $id);
             $sql->execute();
             $result = $sql->get_result();
-            
+
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                
+
                 // Get authors for the book
                 $authors_query = "SELECT CONCAT(d.fname, ' ', d.lname) AS author_name, d.*
                                 FROM holdings_authors AS b
@@ -38,15 +37,15 @@ try {
                 $authors_sql->bind_param("i", $id);
                 $authors_sql->execute();
                 $authors_result = $authors_sql->get_result();
-                
+
                 $authors = array();
-                while($author_row = $authors_result->fetch_assoc()) {
+                while ($author_row = $authors_result->fetch_assoc()) {
                     $authors[] = $author_row;
                 }
-                
+
                 $row['authors'] = $authors;
 
-                // Similar books query revision
+                // Similar books query
                 $similar_query = "SELECT a.*
                                 FROM holdings AS a
                                 WHERE a.title = ? AND a.hold_id != ?";
@@ -54,41 +53,41 @@ try {
                 $similar_sql->bind_param("si", $row['title'], $id);
                 $similar_sql->execute();
                 $similar_result = $similar_sql->get_result();
-                
+
                 $similar_books = array();
-                while($similar_row = $similar_result->fetch_assoc()) {
+                while ($similar_row = $similar_result->fetch_assoc()) {
                     // Get authors for each similar book
                     $authors_sql->bind_param("i", $similar_row['hold_id']);
                     $authors_sql->execute();
                     $authors_result = $authors_sql->get_result();
-                    
+
                     $book_authors = array();
-                    while($author_row = $authors_result->fetch_assoc()) {
+                    while ($author_row = $authors_result->fetch_assoc()) {
                         $book_authors[] = $author_row;
                     }
                     $similar_row['authors'] = $book_authors;
                     $similar_books[] = $similar_row;
                 }
-                
-                // Related books query revision
+
+                // Related books query with collation fix
                 $related_query = "SELECT a.*
                                 FROM holdings AS a
-                                WHERE a.keyword LIKE CONCAT('%', ?, '%') 
+                                WHERE a.keyword COLLATE utf8mb4_general_ci LIKE CONCAT('%', ?, '%') 
                                 AND a.hold_id != ?";
                 $related_sql = $connection->prepare($related_query);
                 $related_sql->bind_param("si", $row['keyword'], $id);
                 $related_sql->execute();
                 $related_result = $related_sql->get_result();
-                
+
                 $related_books = array();
-                while($related_row = $related_result->fetch_assoc()) {
+                while ($related_row = $related_result->fetch_assoc()) {
                     // Get authors for each related book
                     $authors_sql->bind_param("i", $related_row['hold_id']);
                     $authors_sql->execute();
                     $authors_result = $authors_sql->get_result();
-                    
+
                     $book_authors = array();
-                    while($author_row = $authors_result->fetch_assoc()) {
+                    while ($author_row = $authors_result->fetch_assoc()) {
                         $book_authors[] = $author_row;
                     }
                     $related_row['authors'] = $book_authors;
@@ -105,6 +104,7 @@ try {
     }
     $connection->commit();
 } catch (\Exception $e) {
-    $response['error']='Failed to fetch data';
+    $connection->rollback();
+    $response['error'] = 'Failed to fetch data: ' . $e->getMessage();
 }
 echo json_encode($response);

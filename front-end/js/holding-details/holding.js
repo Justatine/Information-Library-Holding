@@ -1,14 +1,14 @@
 $(document).ready(function () {
     const holdingId = getUrlParameter('holdingid');
-    // console.log(holdingId); 
-
+    console.log('id',holdingId); 
+    console.log(url)
     $.ajax({
         type: "GET",
-        url: url+"api-book/book-details",
+        url: url+"api-book/book-details.php",
         data: { id:holdingId },
         dataType: "json",
         success: function (response) {
-            // console.log(response.data);
+            console.log('data',response.data);
             $("#_title").html(response.data.title);
             
             // console.log('Author data:', response.data.authors);
@@ -51,10 +51,6 @@ $(document).ready(function () {
                         <div class="flex flex-col">
                             <span class="text-sm text-gray-500">Total Copies</span>
                             <span class="text-base font-medium" id="_copies">${response.data.copies}</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-sm text-gray-500">Subject Name</span>
-                            <span class="text-base font-medium" id="_sub_name">${response.data.sub_name}</span>
                         </div>
                         <div class="flex flex-col">
                             <span class="text-sm text-gray-500">Keywords</span>
