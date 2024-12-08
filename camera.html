@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script>
     <script src="front-end/js/tesseract/tesseract.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Include Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuzzyset.js/0.0.2/fuzzyset.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -139,12 +142,16 @@
 </head>
 <body>
     <div id="overlay"></div>
+    
     <div id="buttonContainer">
-        <button id="captureBtn">
+        <button id="captureButton">
             <i class="fas fa-camera"></i> <!-- Camera icon -->
         </button>
     </div>
 
+    <video id="videoElement" autoplay style="display:block;"></video>
+    <img id="capturedImage" style="display:none;" alt="Captured Image" />
+    
     <!-- Modal Structure -->
     <div id="resultModal">
         <div id="modalContent">
@@ -169,9 +176,17 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="front-end/js/camera/preprocess1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- <script type="text/javascript" src="cordova.js"></script> -->
     <script type="text/javascript" src="front-end/js/camera/script.js"></script>
     <script src="front-end/js/camera/preload-tesseract.js"></script>
+    <script type="text/javascript" src="front-end/js/upload1/preprocess.js"></script>
+    <script src="front-end/js/camera/ocr.js"></script>
+    <script src="front-end/js/main.js"></script>
 </body>
 </html>

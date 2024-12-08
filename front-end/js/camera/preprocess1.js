@@ -1,166 +1,123 @@
 async function preprocessImage(imgSrc) {
     const progressBar = document.getElementById('progressBar');
-    progressBar.value = 0;
+    if (progressBar) progressBar.value = 0;
 
     const img = new Image();
     img.src = imgSrc;
 
-    document.getElementById('loadingContainer').style.display = 'flex';
+    const loadingContainer = document.getElementById('loadingContainer');
+    if (loadingContainer) loadingContainer.style.display = 'flex';
 
     return new Promise((resolve, reject) => {
         img.onload = async () => {
             try {
-                // Create a canvas to draw the image and retrieve its pixel data
+                // Create a canvas to process the image
                 const canvas = document.createElement('canvas');
                 canvas.width = img.width;
                 canvas.height = img.height;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
 
-                // Create a Mat object from the canvas
-                let src = cv.imread(canvas);
-
-                // Get original image dimensions
-                let width = src.cols;
-                let height = src.rows;
-
-                const maxWidth = 7680;  // Max width for 8K
-                const maxHeight = 4320;  // Max height for 8K
-
-                // Resize to 4x of original size
-                let newWidth = width * 5;
-                let newHeight = height * 5;
-
-                // Check if resizing exceeds 8K dimensions and adjust if necessary
-                if (newWidth > maxWidth || newHeight > maxHeight) {
-                    const scaleFactor = Math.min(maxWidth / width, maxHeight / height);
-                    newWidth = Math.floor(width * scaleFactor);
-                    newHeight = Math.floor(height * scaleFactor);
+                if (!ctx) {
+                    throw new Error("Canvas context is unavailable. Please check your environment.");
                 }
 
-                console.log(`Resized image to dimensions: ${newWidth}x${newHeight}`);
+                ctx.drawImage(img, 0, 0);
 
-                // Resize the image
-                let resizedImage = new cv.Mat();
-                cv.resize(src, resizedImage, new cv.Size(newWidth, newHeight), 0, 0, cv.INTER_LINEAR);
-                updateProgress(11);
+                let src = cv.imread(canvas);
 
+                // Get dimensions and resize to ensure compatibility
+                const maxWidth = 7680;
+                const maxHeight = 4320;
+                let resizedImage = resizeImage(src, maxWidth, maxHeight);
+                updateProgress(20);
                 await delay(50);
 
                 // Convert to grayscale
                 let grayImage = new cv.Mat();
                 cv.cvtColor(resizedImage, grayImage, cv.COLOR_BGR2GRAY);
-                updateProgress(22);
+                updateProgress(40);
                 await delay(50);
 
-                // CLAHE (Contrast Limited Adaptive Histogram Equalization)
-                let clahe = new cv.CLAHE(1.0, new cv.Size(60, 60));
-                let claheImage = new cv.Mat();
-                clahe.apply(grayImage, claheImage);
-                updateProgress(33);
+                // Increase contrast (normalize the image)
+                let contrastImage = new cv.Mat();
+                cv.normalize(grayImage, contrastImage, 0, 255, cv.NORM_MINMAX);
+                updateProgress(50);
                 await delay(50);
 
-                // Apply Gaussian blur
-                let blurredImage = new cv.Mat();
-                cv.GaussianBlur(claheImage, blurredImage, new cv.Size(13, 13), 0);
-                updateProgress(44);
+                // Apply Otsu's Thresholding
+                let otsuThresholded = new cv.Mat();
+                cv.threshold(contrastImage, otsuThresholded, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU);
+                updateProgress(60);
                 await delay(50);
 
-                // Detect edges using Canny edge detection
-                let edges = new cv.Mat();
-                cv.Canny(blurredImage, edges, 200, 200);
-                console.log('Canny edge detection complete');
-                updateProgress(55);
-                await delay(50);
-
-                // Convert images to 3-channel format for blending
-                let blurredImage_3ch = new cv.Mat();
-                let edges_3ch = new cv.Mat();
-                cv.cvtColor(blurredImage, blurredImage_3ch, cv.COLOR_GRAY2BGR);
-                cv.cvtColor(edges, edges_3ch, cv.COLOR_GRAY2BGR);
-
-                // Blend blurred image with edges to create a hybrid result
-                let hybridResult = new cv.Mat();
-                cv.addWeighted(blurredImage_3ch, 1, edges_3ch, 1, 0, hybridResult);
-
-                let hybridGray = new cv.Mat();
-                cv.cvtColor(hybridResult, hybridGray, cv.COLOR_BGR2GRAY);
-                console.log('Hybrid filtering complete');
-                updateProgress(66);
-                await delay(50);
-
-                // Adaptive thresholding (Gaussian)
-                let adaptiveThresholded = new cv.Mat();
-                cv.adaptiveThreshold(hybridGray, adaptiveThresholded, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11, 2);
-                console.log('Adaptive filtering complete');
-                updateProgress(77);
-                await delay(50);
-
-                // Morphological opening to reduce noise
-                let kernel = cv.Mat.ones(7, 7, cv.CV_8U);
-                let morphOpen = new cv.Mat();
-                cv.morphologyEx(adaptiveThresholded, morphOpen, cv.MORPH_OPEN, kernel);
-                console.log('Morphology complete');
-                updateProgress(88);
-                await delay(50);
-                
-                // Median blur to remove noise
+                // Apply Gaussian blur for noise reduction
                 let blurred = new cv.Mat();
-                cv.medianBlur(adaptiveThresholded, blurred, 11);
-                console.log('Median blur complete');
-                updateProgress(95);
+                cv.GaussianBlur(otsuThresholded, blurred, new cv.Size(5, 5), 0);
+                updateProgress(70);
                 await delay(50);
 
-                // Crop the image to 65% of its width
-                let cropWidth = Math.floor(blurred.cols * 0.65);
-                let cropped = blurred.roi(new cv.Rect(0, 0, blurred.cols - cropWidth, blurred.rows));
-                console.log('Cropping complete');
-                updateProgress(99);
+                // Morphological operations: Dilation to make text thicker
+                let kernel = cv.Mat.ones(3, 3, cv.CV_8U); // Use a 3x3 kernel for dilation
+                let dilated = new cv.Mat();
+                cv.dilate(blurred, dilated, kernel);
+                updateProgress(80);
+                await delay(50);
 
-                // Convert the processed cropped image to a Data URL for display
-                const processedCanvas = document.createElement('canvas');
-                processedCanvas.width = cropped.cols;
-                processedCanvas.height = cropped.rows;
-                cv.imshow(processedCanvas, cropped);
+                // Crop to a smaller region if necessary (optional)
+                const cropWidth = Math.floor(dilated.cols * 0.65);
+                const cropped = dilated.roi(new cv.Rect(0, 0, dilated.cols - cropWidth, dilated.rows));
+                updateProgress(90);
+                await delay(50);
 
-                const dataUrl = processedCanvas.toDataURL();
+                // Convert to Data URL for Cordova compatibility
+                const outputCanvas = document.createElement('canvas');
+                outputCanvas.width = cropped.cols;
+                outputCanvas.height = cropped.rows;
+                cv.imshow(outputCanvas, cropped);
 
-                // Resolve the promise with the data URL
-                resolve(dataUrl);
-                console.log(resizedImage);
+                const dataUrl = outputCanvas.toDataURL();
 
-                // Cleanup
-                kernel.delete();
+                // Cleanup OpenCV objects
+                src.delete();
                 resizedImage.delete();
                 grayImage.delete();
-                claheImage.delete();
-                blurredImage.delete();
-                edges.delete();
-                blurredImage_3ch.delete();
-                edges_3ch.delete();
-                hybridResult.delete();
-                hybridGray.delete();
-                adaptiveThresholded.delete();
+                contrastImage.delete();
+                otsuThresholded.delete();
+                blurred.delete();
+                kernel.delete();
+                dilated.delete();
+
+                resolve(dataUrl);
             } catch (error) {
                 console.error("Error during image preprocessing:", error);
-                alert("Error during image preprocessing:", error);
-                window.location.replace('index.html');
                 reject(error);
+            } finally {
+                if (loadingContainer) loadingContainer.style.display = 'none';
             }
         };
 
         img.onerror = (error) => {
-            console.error("Failed to load the image. Please ensure the base64 string is valid and includes the correct prefix (e.g., data:image/jpeg;base64,).", error);
-            alert(error); // Reject the promise if image loading fails
+            console.error("Failed to load the image. Ensure the image source is correct.", error);
+            reject(error);
         };
     });
 }
 
+function resizeImage(src, maxWidth, maxHeight) {
+    const scaleFactor = Math.min(maxWidth / src.cols, maxHeight / src.rows);
+    const newWidth = Math.floor(src.cols * scaleFactor);
+    const newHeight = Math.floor(src.rows * scaleFactor);
+
+    let resizedImage = new cv.Mat();
+    cv.resize(src, resizedImage, new cv.Size(newWidth, newHeight), 0, 0, cv.INTER_LINEAR);
+    return resizedImage;
+}
+
 function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function updateProgress(value) {
     const progressBar = document.getElementById('progressBar');
-    progressBar.value = value;
+    if (progressBar) progressBar.value = value;
 }
