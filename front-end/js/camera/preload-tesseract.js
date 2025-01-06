@@ -1,13 +1,13 @@
-function preloadTesseract(capturedImageUrl) {
+function preloadTesseract() {
     return new Promise((resolve, reject) => {
         // Add your Tesseract preloading code here
         console.log("Tesseract is preloading...");
 
-        // const dummyImageUrl = 'front-end/css/img/crop.png';  // Removed dummy image URL
+        const dummyImageUrl = 'front-end/css/img/crop.png';  // Change this to your actual image path
 
         // Perform a dummy OCR to preload resources
         Tesseract.recognize(
-            capturedImageUrl,  // Use the captured image URL
+            dummyImageUrl,  // This should be a valid URL to your image
             'eng',
             {}
         ).then((result) => {
