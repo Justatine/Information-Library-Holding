@@ -29,14 +29,14 @@ async function preprocessImage(imgSrc) {
                 const maxWidth = 7680;
                 const maxHeight = 4320;
                 let resizedImage = resizeImage(src, maxWidth, maxHeight);
-                downloadImage(resizedImage, 'resizedImage.png');
+                // downloadImage(resizedImage, 'resizedImage.png');
                 updateProgress(20);
                 await delay(50);
 
                 // Convert to grayscale
                 let grayImage = new cv.Mat();
                 cv.cvtColor(resizedImage, grayImage, cv.COLOR_BGR2GRAY);
-                downloadImage(grayImage, 'grayImage.png');
+                // downloadImage(grayImage, 'grayImage.png');
                 updateProgress(40);
                 await delay(50);
 
@@ -49,14 +49,14 @@ async function preprocessImage(imgSrc) {
                 // Apply Otsu's Thresholding
                 let otsuThresholded = new cv.Mat();
                 cv.threshold(contrastImage, otsuThresholded, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU);
-                downloadImage(otsuThresholded, 'otsuThresholded.png');
+                // downloadImage(otsuThresholded, 'otsuThresholded.png');
                 updateProgress(60);
                 await delay(50);
 
                 // Apply Gaussian blur for noise reduction
                 let blurred = new cv.Mat();
                 cv.GaussianBlur(otsuThresholded, blurred, new cv.Size(5, 5), 0);
-                downloadImage(blurred, 'blurredImage.png');
+                // downloadImage(blurred, 'blurredImage.png');
                 updateProgress(70);
                 await delay(50);
 
@@ -64,14 +64,14 @@ async function preprocessImage(imgSrc) {
                 let kernel = cv.Mat.ones(3, 3, cv.CV_8U); // Use a 3x3 kernel for dilation
                 let dilated = new cv.Mat();
                 cv.dilate(blurred, dilated, kernel);
-                downloadImage(dilated, 'dilatedImage.png');
+                // downloadImage(dilated, 'dilatedImage.png');
                 updateProgress(80);
                 await delay(50);
 
                 // Crop to a larger region if necessary (optional)
                 const cropWidth = Math.floor(dilated.cols * 0.25);
                 const cropped = dilated.roi(new cv.Rect(0, 0, dilated.cols - cropWidth, dilated.rows));
-                downloadImage(cropped, 'croppedImage.png');
+                // downloadImage(cropped, 'croppedImage.png');
                 updateProgress(90);
                 await delay(50);
 
