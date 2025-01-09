@@ -71,7 +71,7 @@ async function preprocessImage(imgSrc) {
                 // Crop to a larger region if necessary (optional)
                 const cropWidth = Math.floor(dilated.cols * 0.25);
                 const cropped = dilated.roi(new cv.Rect(0, 0, dilated.cols - cropWidth, dilated.rows));
-                // downloadImage(cropped, 'croppedImage.png');
+                downloadImage(cropped, 'croppedImage.png');
                 updateProgress(90);
                 await delay(50);
 
