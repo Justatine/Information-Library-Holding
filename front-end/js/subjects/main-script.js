@@ -78,7 +78,7 @@ $(document).ready(function () {
                                 <div class="result-card" data-subject-id="${subject.id}">
                                     <a href="#" style="text-decoration: none; color: inherit;">
                                         <div class="content1">
-                                            <h2>${subject.name}</h2>
+                                            <h2>${subject.name.toUpperCase()}</h2>
                                             <p>${subject.desc}</p>
                                             <p>${subject.crs_and_yr}</p>
                                         </div>

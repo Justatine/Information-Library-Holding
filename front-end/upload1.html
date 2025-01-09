@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misamis University Library</title>
     <!-- <script src="../cordova.js"></script> -->
-    <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script>
+    <!-- <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script> -->
     <script src="js/tesseract/tesseract.min.js"></script>
     <link rel="stylesheet" href="css/photo-upload/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fuzzyset.js/0.0.2/fuzzyset.js"></script>
@@ -149,7 +149,12 @@
 
     <!-- <canvas id="canvasOutput" style="display: none;"></canvas>
     <img id="processedImage" alt="Processed Image" style="width: 50%; height: auto;"> -->
-    
+    <script>
+async function onOpenCvReady() { window.cv = await window.cv }
+
+    </script>
+        <script src="js/upload1/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
