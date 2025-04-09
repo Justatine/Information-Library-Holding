@@ -29,51 +29,59 @@ async function preprocessImage(imgSrc) {
                 const maxWidth = 7680;
                 const maxHeight = 4320;
                 let resizedImage = resizeImage(src, maxWidth, maxHeight);
-                // downloadImage(resizedImage, 'resizedImage.png');
                 updateProgress(20);
                 await delay(50);
+                // downloadImage(resizedImage, 'resizedImage.png'); // Download resized image
 
                 // Convert to grayscale
                 let grayImage = new cv.Mat();
                 cv.cvtColor(resizedImage, grayImage, cv.COLOR_BGR2GRAY);
-                // downloadImage(grayImage, 'grayImage.png');
                 updateProgress(40);
                 await delay(50);
+                // downloadImage(grayImage, 'grayImage.png'); // Download grayscale image
 
                 // Increase contrast (normalize the image)
                 let contrastImage = new cv.Mat();
                 cv.normalize(grayImage, contrastImage, 0, 255, cv.NORM_MINMAX);
                 updateProgress(50);
                 await delay(50);
+                // downloadImage(contrastImage, 'contrastImage.png'); // Download contrast-enhanced image
 
                 // Apply Otsu's Thresholding
                 let otsuThresholded = new cv.Mat();
                 cv.threshold(contrastImage, otsuThresholded, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU);
-                // downloadImage(otsuThresholded, 'otsuThresholded.png');
                 updateProgress(60);
                 await delay(50);
+                // downloadImage(otsuThresholded, 'otsuThresholded.png'); // Download thresholded image
 
                 // Apply Gaussian blur for noise reduction
                 let blurred = new cv.Mat();
                 cv.GaussianBlur(otsuThresholded, blurred, new cv.Size(5, 5), 0);
-                // downloadImage(blurred, 'blurredImage.png');
                 updateProgress(70);
                 await delay(50);
+                // downloadImage(blurred, 'blurredImage.png'); // Download blurred image
 
                 // Morphological operations: Dilation to make text thicker
                 let kernel = cv.Mat.ones(3, 3, cv.CV_8U); // Use a 3x3 kernel for dilation
                 let dilated = new cv.Mat();
                 cv.dilate(blurred, dilated, kernel);
-                // downloadImage(dilated, 'dilatedImage.png');
                 updateProgress(80);
                 await delay(50);
+                // downloadImage(dilated, 'dilatedImage.png'); // Download dilated image
 
                 // Crop to a larger region if necessary (optional)
-                const cropWidth = Math.floor(dilated.cols * 0.25);
-                const cropped = dilated.roi(new cv.Rect(0, 0, dilated.cols - cropWidth, dilated.rows));
-                downloadImage(cropped, 'croppedImage.png');
+                const cropWidth = Math.floor(dilated.cols * 0.40);      // Crop 25% from the right
+                const cropTop = Math.floor(dilated.rows * 0.2);          // Crop 20% from the top
+                const cropBottom = Math.floor(dilated.rows * 0.4);       // Crop 40% from the bottom
+                
+                const x = 0;
+                const y = cropTop;
+                const newWidth = dilated.cols - cropWidth;
+                const newHeight = dilated.rows - cropTop - cropBottom;   // Exclude both top and bottom
+                const cropped = dilated.roi(new cv.Rect(x, y, newWidth, newHeight));
+                downloadImage(cropped, 'croppedImage.png'); // Download cropped image
                 updateProgress(90);
-                await delay(50);
+                await delay(50);                 
 
                 // Convert to Data URL for Cordova compatibility
                 const outputCanvas = document.createElement('canvas');

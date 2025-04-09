@@ -5,7 +5,7 @@ function fetchSubjects() {
         method: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log('Fetched subjects:', data.data);
+            // console.log('Fetched subjects:', data.data);
             return data.data.subjects; 
         },
         error: function(err) {
@@ -19,7 +19,7 @@ function fetchSubjects() {
 function matchSubjects(ocrText, subjects) {
     let matchedSubjects = [];
 
-    // Process the OCR text by converting it to lowercase
+    // // Process the OCR text by converting it to lowercase
     const processedOcrText = ocrText.toLowerCase();
     console.log('Processed OCR Text:', processedOcrText); // Debug: Show the processed OCR text
 
@@ -46,11 +46,11 @@ function matchSubjects(ocrText, subjects) {
                 crs_and_yr: `${subject.course} - ${subject.year_level}`
             });
 
-            console.log(`Match Added: "${subject.sub_name}"`);
+            // console.log(`Match Added: "${subject.sub_name}"`);
         } else if (isMatchWithSpaces || isMatchWithoutSpaces) {
             console.log(`Duplicate Match Ignored: "${subject.sub_name}"`);
         } else {
-            console.log(`No match for "${subject.sub_name}" in OCR Text`);
+            // console.log(`No match for "${subject.sub_name}" in OCR Text`);
         }
     });
 
@@ -60,7 +60,7 @@ function matchSubjects(ocrText, subjects) {
 
 
 function extractCourseAndYear(ocrText) {
-    const courseYearRegex = /Course\s*&\s*Year\s*:\s*([A-Za-z]+)-([1-4])/i;
+    const courseYearRegex = /&\s*Year\s*:\s*([A-Za-z]+)-([1-4])/i;
     
     const match = ocrText.match(courseYearRegex);
 

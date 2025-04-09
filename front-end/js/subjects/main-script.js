@@ -22,9 +22,9 @@ $(document).ready(function () {
     const proImageData = localStorage.getItem('proImageData');
     const imageData = localStorage.getItem('imageData');
 
-    console.log('Image', imageData);
-    console.log('Pro Image', proImageData);
-    console.log('OCR Result:', ocrResult);
+    // console.log('Image', imageData);
+    // console.log('Pro Image', proImageData);
+    // console.log('OCR Result:', ocrResult);
 
     document.getElementById('gallery-btn').addEventListener('click', function () {
         $('#imageTypeModal').modal('hide');
@@ -49,19 +49,26 @@ $(document).ready(function () {
                 subjects = Array.isArray(subjects.data) ? subjects.data : [];
             }
 
-            const matchedSubjects = matchSubjects(ocrResult, subjects);
-            console.log('Matched subjects:', matchedSubjects);
-
             const container = $('#matchedSubjectsContainer');
             container.empty();
 
-            const courseAndYear = extractCourseAndYear(ocrResult);
-            console.log('Extracted Course and Year:', courseAndYear);
+            var matchedSubjects;
+
+            const courseAndYear = extractCourseAndYear(ocrResult); 
+            localStorage.setItem('CAY',courseAndYear)
+
+            const courseAndYearValid = localStorage.getItem('CAY')
+
+            if (courseAndYearValid != null || courseAndYearValid != "") {
+                console.log('Extracted Course and Year:', courseAndYearValid);
+                matchedSubjects = matchSubjects(ocrResult, subjects);
+                // console.log('Matched subjects:', matchedSubjects);
+            }
 
             if (Array.isArray(matchedSubjects) && matchedSubjects.length > 0) {
                 const filteredSubjects = matchedSubjects.filter(subject => {
-                    if (!subject.crs_and_yr || !courseAndYear) return false;
-                    return subject.crs_and_yr.replace(/\s+/g, '') === courseAndYear.replace(/\s+/g, '');
+                    if (!subject.crs_and_yr || !courseAndYearValid) return false;
+                    return subject.crs_and_yr.replace(/\s+/g, '') === courseAndYearValid.replace(/\s+/g, '');
                 });
 
                 const addedSubjectIds = new Set(); // Track added subject IDs

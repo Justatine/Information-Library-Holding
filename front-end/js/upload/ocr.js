@@ -41,6 +41,7 @@ async function performOCR(imageDataUrl) {
 function logOcrResult(ocrResult) {
     return new Promise((resolve, reject) => {
         $.ajax({
+            // url: 'http://localhost/back-end/api-log/v1/ocr_log',
             url: 'https://ilibrary.zreky.muccs.host/back-end/api-log/v1/ocr_log',
             type: 'POST',
             data: { ocr_result: ocrResult },
